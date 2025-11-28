@@ -4,6 +4,8 @@ import { ProductOverviewPage } from './pages/productOverviewPage';
 import { ProductDetailPage } from './pages/productDetailPage';
 import { ShoppingCartPage } from './pages/shoppingCartPage';
 import { CheckoutPage } from './pages/checkoutPage';
+import { ConfirmationPage } from './pages/confirmationPage';
+import { User } from './models/user';
 
 test.describe('User can buy products from the shop', async() => {
 
@@ -31,11 +33,13 @@ test.describe('User can buy products from the shop', async() => {
       // Shopping cart
       await new ShoppingCartPage(page).gotoCheckout();
 
+      var user = new User('12345');
+
       // Checkout
-      await new CheckoutPage(page).checkoutOrder('Bas', 'Dijkstra', '12345');
+      await new CheckoutPage(page).checkoutOrder(user);
 
       // Confirmation
-      await expect(page.getByText('Thank you for your order!')).toBeVisible();
+      await expect(new ConfirmationPage(page).textConfirmation).toBeVisible();
     });
   }
 });
